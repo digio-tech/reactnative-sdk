@@ -1,6 +1,6 @@
 {
   "name": "@digiotech/react-native",
-  "version": "1.0.16",
+  "version": "1.0.18",
   "description": "SDK for invoking client side journey for any of Digio request",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

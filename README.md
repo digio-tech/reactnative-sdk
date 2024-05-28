@@ -89,10 +89,14 @@ function YourComponent() {
 - Add digioKycworkflow.aar file inside your react project under android/app/libs folder. [Download digio_kyc_workflow-4.0.15.aar](https://drive.google.com/file/d/1nHeZhDBPavLxwJp0VgNrMiEZpXswENgz/view?usp=sharing)
 
 
-- Add below in your project under build.gradle file inside dependencies
+- Add below in your project under build.gradle (module:app)file inside dependencies
 
 ```tsx
 implementation fileTree(dir: 'libs', include: ['*.aar'])
+// Required for KYC/work_flow /video/2way video
+implementation 'com.github.digio-tech:gateway_kyc:v4.0.20'
+// Required for esign/mandate sign
+implementation 'com.github.digio-tech:protean-esign:v3.2'
 ```
 
 ## SDK Reference
