@@ -7,7 +7,7 @@ Official React Native SDK for Digio Gateway Integration
 ## Installation
 
 ```sh
-yarn install @digiotech/react-native
+yarn add @digiotech/react-native
 ```
 
 ## Documentation
