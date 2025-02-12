@@ -37,6 +37,7 @@ import java.util.Map;
 import in.digio.sdk.gateway.DigioActivity;
 import in.digio.sdk.gateway.DigioConstants;
 import in.digio.sdk.gateway.enums.DigioEnvironment;
+import in.digio.sdk.gateway.enums.DigioServiceMode;
 import in.digio.sdk.gateway.enums.DigioErrorCode;
 import in.digio.sdk.gateway.model.DigioConfig;
 import in.digio.sdk.gateway.model.DigioTheme;
@@ -45,7 +46,7 @@ import in.digio.sdk.gateway.model.DigioTheme;
 public class DigioReactNativeModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
   public static final String NAME = "DigioReactNative";
 
-  public static final String AAR_VERSION = "4.0.8";
+  public static final String AAR_VERSION = "4.0.9";
   public static final int DIGIO_ACTIVITY = 73457843;
   private Promise resultPromise;
   private boolean isReceiverRegistered = false;
@@ -182,6 +183,8 @@ public class DigioReactNativeModule extends ReactContextBaseJavaModule implement
       DigioConfig digioConfig = new DigioConfig();
       String environment = config.getString("environment");
       String logo = config.getString("logo");
+      String mode = config.getString("mode");
+      Log.e("Digio_mode ", ""+mode);
       if (!TextUtils.isEmpty(environment)) {
         try {
           digioConfig.setEnvironment(DigioEnvironment.valueOf(environment.toUpperCase(Locale.ENGLISH)));
@@ -216,15 +219,17 @@ public class DigioReactNativeModule extends ReactContextBaseJavaModule implement
       }
 
       digioConfig.setTheme(digioTheme);
-
-      intent.putExtra("config", digioConfig);
+      
       intent.putExtra("aar_version", AAR_VERSION);
       if (documentId.startsWith("ENA") || documentId.startsWith("DID")) {
         intent.putExtra("navigation_graph", in.digio.sdk.esign.R.navigation.esign);
+        if (!TextUtils.isEmpty(mode)) {
+        digioConfig.setServiceMode(DigioServiceMode.valueOf(mode.toUpperCase(Locale.ENGLISH)));
+      }
       } else {
         intent.putExtra("navigation_graph", in.digio.sdk.kyc.R.navigation.workflow);
       }
-
+      intent.putExtra("config", digioConfig);
       intent.putExtra("document_id", documentId);
       intent.putExtra("customer_identifier", identifier);
       intent.putExtra("token_id", tokenId);

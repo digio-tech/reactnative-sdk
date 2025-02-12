@@ -3,10 +3,11 @@ import * as React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Digio, Environment } from '@digiotech/react-native';
 import type { GatewayEvent } from '@digiotech/react-native';
+import { ServiceMode } from '../../src/types/enums/service_mode';
 
 export default function App() {
   React.useEffect(() => {
-    const digio = new Digio({ environment: Environment.PRODUCTION });
+    const digio = new Digio({ environment: Environment.PRODUCTION, serviceMode: ServiceMode.FP });
 
     const digioGatewayEventSubscription = digio.addGatewayEventListener(
       (event: GatewayEvent) => {
@@ -15,9 +16,9 @@ export default function App() {
     );
     digio
       .start(
-        'DID241223192125925KXC9OHUYPF8T3J',
+        'KID250131161454694U3T5A8I8V1IA15',
         'akash.kumar@digio.in',
-        'GWT24122319212682868JPKWC1M6MRJS'
+        'GWT250131161454897Y2PRYLWJCW7VQS'
       )
       .then((res) => {
         console.log(res);
