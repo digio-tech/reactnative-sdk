@@ -1,13 +1,13 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import { Digio, Environment } from '@digiotech/react-native';
+import { Digio, Environment, ServiceMode } from '@digiotech/react-native';
 import type { GatewayEvent } from '@digiotech/react-native';
-import { ServiceMode } from '../../src/types/enums/service_mode';
+// import { ServiceMode } from '../../src/types/enums/service_mode';
 
 export default function App() {
   React.useEffect(() => {
-    const digio = new Digio({ environment: Environment.PRODUCTION, serviceMode: ServiceMode.FP });
+    const digio = new Digio({ environment: Environment.PRODUCTION, serviceMode: ServiceMode.FACE });
 
     const digioGatewayEventSubscription = digio.addGatewayEventListener(
       (event: GatewayEvent) => {
@@ -16,9 +16,9 @@ export default function App() {
     );
     digio
       .start(
-        'KID250131161454694U3T5A8I8V1IA15',
+        'KID250220161217116NNRDJUGPZIPC5U',
         'akash.kumar@digio.in',
-        'GWT250131161454897Y2PRYLWJCW7VQS'
+        'GWT250220161217149C9DGW6U3F9RXWS'
       )
       .then((res) => {
         console.log(res);
