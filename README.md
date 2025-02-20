@@ -160,6 +160,26 @@ A fintech Android app can't access the following permission
 - Read_phone_numbers
 - Read_media_videos
 
+## You get a build error due to a theme issue.
+- Please add tools:replace="android:theme" under your android manifest.
+```
+ <application
+      ....
+      tools:replace="android:theme"
+      ...
+      >
+      .....
+    </application>
+
+```
+## You get a build error due to a duplicate class android.support.v4
+- Check your gradle.properties below should be added.
+```
+android.enableJetifier=true
+reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64
+
+```
+
 ### IOS Permission
 
 Permissions need to add in your info.plist
