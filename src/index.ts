@@ -10,6 +10,7 @@ import type { DigioResponse } from './types/interfaces/digio_response';
 import type { GatewayEvent } from './types/interfaces/gateway_event';
 
 export { Environment } from './types/enums/environment';
+export { ServiceMode } from './types/enums/service_mode';
 
 const LINKING_ERROR =
   `The package 'digio-react-native' doesn't seem to be linked. Make sure: \n\n` +
@@ -85,6 +86,7 @@ export class Digio {
     return {
       environment: this.config.environment,
       logo: this.config.logo,
+      mode: this.config.serviceMode,
       ...this.config.theme,
     };
   }

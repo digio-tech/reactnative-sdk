@@ -1,26 +1,35 @@
-import * as React from 'react';
-
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { Digio, Environment } from '@digiotech/react-native';
+import { Digio, Environment, ServiceMode } from '@digiotech/react-native';
 import type { GatewayEvent } from '@digiotech/react-native';
 
 export default function App() {
-  React.useEffect(() => {
-    const digio = new Digio({ environment: Environment.PRODUCTION });
+  const [digioResult, setDigioResult] = useState<any | null>(null);
+  const [digioEvent, setDigioEvent] = useState<string | null>(null);
+
+  useEffect(() => {
+    const digio = new Digio({ environment: Environment.PRODUCTION, serviceMode: ServiceMode.OTP });
 
     const digioGatewayEventSubscription = digio.addGatewayEventListener(
       (event: GatewayEvent) => {
         console.log('Digio_event ' + event.event);
+        if (event.event !== undefined) {
+          setDigioEvent(event.event);
+        }
       }
     );
+
     digio
       .start(
-        'DID241223192125925KXC9OHUYPF8T3J',
+        'KID250220172348723LZOELQQ99NSVSP',
         'akash.kumar@digio.in',
-        'GWT24122319212682868JPKWC1M6MRJS'
+        'GWT250220172348753FOJYJA8DXAU2OS'
       )
       .then((res) => {
         console.log(res);
+        if (res !== undefined) {
+          setDigioResult(res);
+        }
       })
       .catch((err) => console.error(err));
 
@@ -32,6 +41,14 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Digio Starting</Text>
+      <View style={styles.resultContainer}>
+        <Text>Result:</Text>
+        <Text>{digioResult ? JSON.stringify(digioResult) : 'Waiting...'}</Text>
+      </View>
+      <View style={styles.eventContainer}>
+        <Text>Event:</Text>
+        <Text>{digioEvent ? digioEvent : 'Waiting...'}</Text>
+      </View>
     </View>
   );
 }
@@ -42,9 +59,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+  resultContainer: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 5,
+  },
+  eventContainer: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 5,
   },
 });

@@ -37,15 +37,17 @@ import java.util.Map;
 import in.digio.sdk.gateway.DigioActivity;
 import in.digio.sdk.gateway.DigioConstants;
 import in.digio.sdk.gateway.enums.DigioEnvironment;
+import in.digio.sdk.gateway.enums.DigioServiceMode;
 import in.digio.sdk.gateway.enums.DigioErrorCode;
 import in.digio.sdk.gateway.model.DigioConfig;
 import in.digio.sdk.gateway.model.DigioTheme;
+
 
 @ReactModule(name = DigioReactNativeModule.NAME)
 public class DigioReactNativeModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
   public static final String NAME = "DigioReactNative";
 
-  public static final String AAR_VERSION = "4.0.8";
+  public static final String AAR_VERSION = "5.0.1";
   public static final int DIGIO_ACTIVITY = 73457843;
   private Promise resultPromise;
   private boolean isReceiverRegistered = false;
@@ -55,17 +57,19 @@ public class DigioReactNativeModule extends ReactContextBaseJavaModule implement
 
     @Override
     public void onReceive(Context context, Intent intent) {
-      if (intent.getStringExtra("data") != null) {
+      if (intent.getStringExtra("updateGatewayEvent") != null) {
+//      if (intent.getStringExtra("data") != null) {
         JSONObject jsonObject = null;
         try {
           jsonObject = new JSONObject(
-            intent.getStringExtra(
-              "data"
-            )
+//            intent.getStringExtra("data")
+            intent.getStringExtra("updateGatewayEvent")
           );
         } catch (JSONException e) {
           e.printStackTrace();
         }
+        // Log.e("CheckResponse"," gatewayEvent "+jsonObject);
+
         WritableMap resultMap = MapUtil.jsonToWritableMap(jsonObject);
         getReactApplicationContext()
           .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
@@ -78,7 +82,8 @@ public class DigioReactNativeModule extends ReactContextBaseJavaModule implement
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, @Nullable Intent intent) {
       if (requestCode == DIGIO_ACTIVITY) {
-        onNativeActivityResult(resultCode, intent);
+        int responseCode = intent.getIntExtra("responseCode", 0);
+        onNativeActivityResult(responseCode, intent);
       }
     }
 
@@ -92,16 +97,19 @@ public class DigioReactNativeModule extends ReactContextBaseJavaModule implement
     WritableMap resultMap = Arguments.createMap();
     resultMap.putInt("code", resultCode);
     if (data != null) {
+      // Log.e("CheckResponse"," resultCode "+resultCode+ " data "+data.getDataString());
+
       resultMap.putString("message", data.getStringExtra("message"));
-      String screenName = data.getStringExtra("screen_name");
+      String screenName = data.getStringExtra("currentState");
+//      String screenName = data.getStringExtra("screen_name");
       if (TextUtils.isEmpty(screenName)) {
         screenName = "starting_digio";
       }
       resultMap.putString("screen", screenName);
       resultMap.putString("step", data.getStringExtra("step"));
       resultMap.putString("documentId", data.getStringExtra("document_id"));
-      resultMap.putString("failingUrl", data.getStringExtra("failing_url"));
-      resultMap.putInt("errorCode", data.getIntExtra("error_code", resultCode));
+      resultMap.putString("failingUrl", data.getStringExtra("failingUrl"));
+      resultMap.putInt("errorCode", data.getIntExtra("errorCode", resultCode));
       String[] stringArrayExtra = data.getStringArrayExtra("permissions");
       WritableArray permissionArray = Arguments.createArray();
       if (stringArrayExtra != null && stringArrayExtra.length > 0) {
@@ -142,7 +150,7 @@ public class DigioReactNativeModule extends ReactContextBaseJavaModule implement
       compatRegisterReceiver(this.getReactApplicationContext(), eventBroadcastReceiver, filter, true);
       isReceiverRegistered = true;
     }
-    
+
   }
 
   @Override
@@ -174,14 +182,17 @@ public class DigioReactNativeModule extends ReactContextBaseJavaModule implement
     }
   }
 
-  @ReactMethod
+@ReactMethod
   public void start(String documentId, String identifier, String tokenId, ReadableMap additionalData, ReadableMap config, Promise promise) {
     this.resultPromise = promise;
     try {
       Intent intent = new Intent(this.getCurrentActivity(), DigioActivity.class);
+      // set everything under digioConfig
       DigioConfig digioConfig = new DigioConfig();
       String environment = config.getString("environment");
       String logo = config.getString("logo");
+      String mode = config.getString("mode");
+      // Log.e("Digio_mode ", ""+mode);
       if (!TextUtils.isEmpty(environment)) {
         try {
           digioConfig.setEnvironment(DigioEnvironment.valueOf(environment.toUpperCase(Locale.ENGLISH)));
@@ -217,17 +228,16 @@ public class DigioReactNativeModule extends ReactContextBaseJavaModule implement
 
       digioConfig.setTheme(digioTheme);
 
-      intent.putExtra("config", digioConfig);
-      intent.putExtra("aar_version", AAR_VERSION);
-      if (documentId.startsWith("ENA") || documentId.startsWith("DID")) {
-        intent.putExtra("navigation_graph", in.digio.sdk.esign.R.navigation.esign);
-      } else {
-        intent.putExtra("navigation_graph", in.digio.sdk.kyc.R.navigation.workflow);
+      digioConfig.setAarVersion(AAR_VERSION);
+      if (!TextUtils.isEmpty(mode)) {
+        digioConfig.setServiceMode(DigioServiceMode.valueOf(mode.toUpperCase(Locale.ENGLISH)));
       }
 
-      intent.putExtra("document_id", documentId);
-      intent.putExtra("customer_identifier", identifier);
-      intent.putExtra("token_id", tokenId);
+      digioConfig.setGToken(tokenId);
+      digioConfig.setRequestId(documentId);
+      digioConfig.setUserIdentifier(identifier);
+      digioConfig.setLinkApproach(false);
+
       HashMap additionalDataMap = new HashMap();
       if (additionalData != null) {
         Iterator<Map.Entry<String, Object>> entryIterator = additionalData.getEntryIterator();
@@ -236,7 +246,9 @@ public class DigioReactNativeModule extends ReactContextBaseJavaModule implement
           additionalDataMap.put(objectEntry.getKey(), objectEntry.getValue());
         }
       }
-      intent.putExtra("additional_data", additionalDataMap);
+      digioConfig.setAdditionalData(additionalDataMap);
+      intent.putExtra("config", digioConfig);
+
       this.getCurrentActivity().startActivityForResult(intent, DIGIO_ACTIVITY);
     } catch (Exception e) {
       // Throws DigioException if WorkflowResponseListener is not implemented/passed, or

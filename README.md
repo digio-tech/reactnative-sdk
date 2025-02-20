@@ -19,9 +19,9 @@ Documentation of Digio Gateway Integration and their usage
 Instantiate the Digio instance with `environment` & other options
 
 ```tsx
-import { Digio, DigioConfig, DigioResponse } from '@digiotech/react-native';
+import { Digio, DigioConfig, DigioResponse, ServiceMode } from '@digiotech/react-native';
 
-const config: DigioConfig = { environment: Environment.PRODUCTION };
+const config: DigioConfig = { environment: Environment.PRODUCTION, serviceMode: ServiceMode.OTP  };
 const digio = new Digio(config);
 const documentId = "<document_id>";
 const identifier = "<email_or_phone>";
@@ -36,7 +36,7 @@ For a complete list of events and the payload associated with it, refer [here](h
 
 ```tsx
 import { useEffect } from 'react';
-import { Digio, DigioConfig, GatewayEvent } from '@digiotech/react-native';
+import { Digio, DigioConfig, GatewayEvent, ServiceMode } from '@digiotech/react-native';
 
 function YourComponent() {
   useEffect(() => {
@@ -57,7 +57,7 @@ function YourComponent() {
 
 ```tsx
 import { useEffect } from 'react';
-import { Digio, DigioConfig, GatewayEvent } from '@digiotech/react-native';
+import { Digio, DigioConfig, GatewayEvent, ServiceMode } from '@digiotech/react-native';
 
 function YourComponent() {
   useEffect(() => {
@@ -73,7 +73,7 @@ function YourComponent() {
   }, []);
 
   const triggerDigioGateway = async () => {
-    const config: DigioConfig = { environment: Environment.PRODUCTION };
+    const config: DigioConfig = { environment: Environment.PRODUCTION, serviceMode: ServiceMode.OTP };
     const digio = new Digio(config);
     const documentId = "<document_id>";
     const identifier = "<email_or_phone>";
@@ -85,18 +85,17 @@ function YourComponent() {
 ```
 
 ## Android
-#### Note: Incase you are using camera feature and facing black screen on camera then follow below steps
-- Add digioKycworkflow.aar file inside your react project under android/app/libs folder. [Download digio_kyc_workflow-4.0.15.aar](https://drive.google.com/file/d/1nHeZhDBPavLxwJp0VgNrMiEZpXswENgz/view?usp=sharing)
-
-
 - Add below in your project under build.gradle (module:app)file inside dependencies
 
 ```tsx
-implementation fileTree(dir: 'libs', include: ['*.aar'])
-// Required for KYC/work_flow /video/2way video
-implementation 'com.github.digio-tech:gateway_kyc:v4.0.20'
 // Required for esign/mandate sign
 implementation 'com.github.digio-tech:protean-esign:v3.2'
+// under android {} of build.gradle(module:app)
+ buildFeatures {
+    viewBinding true
+    dataBinding true
+  }
+
 ```
 
 ## SDK Reference
@@ -105,11 +104,12 @@ implementation 'com.github.digio-tech:protean-esign:v3.2'
 
 **Parameters:**
 
-| Name            | Type    | Description                                                                            |
-|-----------------|---------|----------------------------------------------------------------------------------------|
-| environment*    | string  | Environment for which you want to open gateway. One of `sandbox` or `production`       |
-| logo            | string  | Pass an URL of your brand logo. **Note:** Pass an optimised image url for best results |
-| theme           | string  | Options for changing the appearance of the gateway. See below for options under it.    |
+| Name            | Type    | Description                                                                                 |
+|-----------------|---------|---------------------------------------------------------------------------------------------|
+| environment*    | string  | Environment for which you want to open gateway. One of `sandbox` or `production`            |
+| logo            | string  | Pass an URL of your brand logo. **Note:** Pass an optimised image url for best results      |
+| theme           | string  | Options for changing the appearance of the gateway. See below for options under it.         |
+| serviceMode*    | string  | ServiceMode can be OTP/FACE/IRIS/FP <Default it's OTP>  you can set based on your requirment|
 
 **Theme:**
 
@@ -140,9 +140,17 @@ Add required permissions in the manifest file. Note - This is the common SDK for
 <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 /** Required for geotagging */
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
 /** Required for ID card analysis, selfie and face match**/
 <uses-permission android:name="android.permission.CAMERA" />
 <uses-feature android:name="android.hardware.camera.autofocus"   android:required="false" />
+
+<uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+<uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+<uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+
+
 ```
 A fintech Android app can't access the following permission
 - Read_external_storage
@@ -151,6 +159,26 @@ A fintech Android app can't access the following permission
 - Access_fine_location
 - Read_phone_numbers
 - Read_media_videos
+
+## You get a build error due to a theme issue.
+- Please add tools:replace="android:theme" under your android manifest.
+```
+ <application
+      ....
+      tools:replace="android:theme"
+      ...
+      >
+      .....
+    </application>
+
+```
+## You get a build error due to a duplicate class android.support.v4
+- Check your gradle.properties below should be added.
+```
+android.enableJetifier=true
+reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64
+
+```
 
 ### IOS Permission
 

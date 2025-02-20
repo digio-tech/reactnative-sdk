@@ -101,13 +101,17 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+  buildFeatures {
+    viewBinding true
+    dataBinding true
+  }
 }
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     // implementation fileTree(dir: 'libs', include: ['*.aar'])
-    implementation 'com.github.digio-tech:gateway_kyc:v4.0.20'
+//    implementation 'com.github.digio-tech:gateway_kyc:v4.0.20'
     implementation 'com.github.digio-tech:protean-esign:v3.2'
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
