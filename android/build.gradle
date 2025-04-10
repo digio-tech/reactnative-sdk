@@ -89,7 +89,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
 // core dependencies
-  implementation(platform("com.github.digio-tech:digio-bom:v1.0.10"))
+  implementation(platform("com.github.digio-tech:digio-bom:v1.0.14"))
   implementation("androidx.appcompat:appcompat")
   implementation("com.google.android.material:material")
   implementation("androidx.navigation:navigation-fragment-ktx")
@@ -107,7 +107,7 @@ dependencies {
 
   implementation("com.github.digio-tech:sdk_offlinekyc")
 
-  implementation("com.github.digio-tech:esign_otp")
+  // implementation("com.github.digio-tech:esign_otp")
   compileOnly("com.github.digio-tech:protean-esign")
   implementation("com.github.digio-tech:cvl_esign")
   implementation("com.scottyab:rootbeer-lib")

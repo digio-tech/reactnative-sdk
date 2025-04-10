@@ -84,7 +84,8 @@ function YourComponent() {
 }
 ```
 
-## Android
+## Android 
+- Digio SDK supports android version 7 (SDK level 24) and above
 - Add below in your project under build.gradle (module:app)file inside dependencies
 
 ```tsx
@@ -181,7 +182,7 @@ reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64
 ```
 
 ### IOS Permission
-
+- Digio SDK supports iOS 11 and above
 Permissions need to add in your info.plist
 ```
   /**  Camera permission incase of selfie/video KYC/ capture document  **/
