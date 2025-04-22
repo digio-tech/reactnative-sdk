@@ -97,6 +97,9 @@ implementation 'com.github.digio-tech:protean-esign:v3.2'
     dataBinding true
   }
 
+// Make sure your project using 
+    compileSdkVersion = 35
+    targetSdkVersion = 35
 ```
 
 ## SDK Reference
