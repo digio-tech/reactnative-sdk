@@ -51,6 +51,7 @@ public class DigioReactNativeModule extends ReactContextBaseJavaModule implement
   public static final int DIGIO_ACTIVITY = 73457843;
   private Promise resultPromise;
   private boolean isReceiverRegistered = false;
+  private boolean isResultHandled = false;
 
 
   private BroadcastReceiver eventBroadcastReceiver = new BroadcastReceiver() {
@@ -81,9 +82,19 @@ public class DigioReactNativeModule extends ReactContextBaseJavaModule implement
   ActivityEventListener activityEventListener = new ActivityEventListener() {
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, @Nullable Intent intent) {
-      if (requestCode == DIGIO_ACTIVITY) {
-        int responseCode = intent.getIntExtra("responseCode", 0);
-        onNativeActivityResult(responseCode, intent);
+      if (requestCode == DIGIO_ACTIVITY && !isResultHandled) {
+        isResultHandled = true;
+         if (intent != null) {
+          int responseCode = 0;
+          if (intent.hasExtra("responseCode")) {
+             responseCode = intent.getIntExtra("responseCode", 0);
+          }else{
+             responseCode = intent.getIntExtra("errorCode", 0);
+          }
+          onNativeActivityResult(responseCode, intent);
+        }else{
+          onNativeActivityResult(resultCode, null);
+        }
       }
     }
 
@@ -249,6 +260,7 @@ public class DigioReactNativeModule extends ReactContextBaseJavaModule implement
       digioConfig.setAdditionalData(additionalDataMap);
       intent.putExtra("config", digioConfig);
 
+      isResultHandled = false;
       this.getCurrentActivity().startActivityForResult(intent, DIGIO_ACTIVITY);
     } catch (Exception e) {
       // Throws DigioException if WorkflowResponseListener is not implemented/passed, or
