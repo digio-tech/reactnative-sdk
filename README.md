@@ -85,12 +85,12 @@ function YourComponent() {
 ```
 
 ## Android 
-- Digio SDK supports android version 7 (SDK level 24) and above
+- Digio SDK supports android version 8 (SDK level 26) and above
 - Add below in your project under build.gradle (module:app)file inside dependencies
 
 ```tsx
 // Required for esign/mandate sign
-implementation 'com.github.digio-tech:protean-esign:v3.2'
+implementation 'com.github.digio-tech:protean-esign:v3.12'
 // under android {} of build.gradle(module:app)
  buildFeatures {
     viewBinding true
@@ -185,7 +185,7 @@ reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64
 ```
 
 ### IOS Permission
-- Digio SDK supports iOS 11 and above
+- Digio SDK supports iOS 15.6 and above
 Permissions need to add in your info.plist
 ```
   /**  Camera permission incase of selfie/video KYC/ capture document  **/

@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Digio, Environment, ServiceMode } from '@digiotech/react-native';
 import type { GatewayEvent } from '@digiotech/react-native';
 
 export default function App() {
   const [digioResult, setDigioResult] = useState<any | null>(null);
   const [digioEvent, setDigioEvent] = useState<string | null>(null);
+  const digioRef = useRef<any>(null);
 
   useEffect(() => {
-    const digio = new Digio({ environment: Environment.PRODUCTION, serviceMode: ServiceMode.OTP });
+    // Initialize Digio only once
+    digioRef.current = new Digio({
+      environment: Environment.PRODUCTION,
+      serviceMode: ServiceMode.OTP,
+    });
 
-    const digioGatewayEventSubscription = digio.addGatewayEventListener(
+    const digioGatewayEventSubscription = digioRef.current.addGatewayEventListener(
       (event: GatewayEvent) => {
         console.log('Digio_event ' + event.event);
         if (event.event !== undefined) {
@@ -19,28 +24,30 @@ export default function App() {
       }
     );
 
-    digio
-      .start(
-        'KID250423131507165T4ALP7UIDB4UFZ',
-        'akash.kumar@digio.in',
-        'GWT250423131507194T9AD9V4FENFHYS'
-      )
-      .then((res) => {
-        console.log(res);
-        if (res !== undefined) {
-          setDigioResult(res);
-        }
-      })
-      .catch((err) => console.error(err));
-
     return () => {
       digioGatewayEventSubscription.remove();
     };
   }, []);
 
+  const startDigioFlow = () => {
+    digioRef.current
+      ?.start(
+        'KID2510271XXXXX1AW9QWSDV1CXQE',
+        'abc@digio.in',
+        'GWT251027XXX121856MDL4XLZRMJ336S'
+      )
+      .then((res: any) => {
+        console.log(res);
+        if (res !== undefined) {
+          setDigioResult(res);
+        }
+      })
+      .catch((err: any) => console.error(err));
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Digio Starting</Text>
+      <Text>Digio Ready</Text>
       <View style={styles.resultContainer}>
         <Text>Result:</Text>
         <Text>{digioResult ? JSON.stringify(digioResult) : 'Waiting...'}</Text>
@@ -49,6 +56,11 @@ export default function App() {
         <Text>Event:</Text>
         <Text>{digioEvent ? digioEvent : 'Waiting...'}</Text>
       </View>
+
+      {/* Floating Action Button */}
+      <TouchableOpacity style={styles.fab} onPress={startDigioFlow}>
+        <Text style={styles.fabText}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -70,5 +82,22 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#e0e0e0',
     borderRadius: 5,
+  },
+  fab: {
+    position: 'absolute',
+    right: 20,
+    bottom: 30,
+    backgroundColor: '#6200ee',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 5,
+  },
+  fabText: {
+    color: '#fff',
+    fontSize: 30,
+    fontWeight: 'bold',
   },
 });
