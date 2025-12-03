@@ -13,6 +13,7 @@ export default function App() {
     digioRef.current = new Digio({
       environment: Environment.PRODUCTION,
       serviceMode: ServiceMode.OTP,
+      isGlobal: false
     });
 
     const digioGatewayEventSubscription = digioRef.current.addGatewayEventListener(
@@ -32,9 +33,9 @@ export default function App() {
   const startDigioFlow = () => {
     digioRef.current
       ?.start(
-        'ENA25102XXXXX8S94UVP2QJAP',
-        'abc@digio.in',
-        'GWT2XXXXNJ47VH2YMEUS'
+        'KID251203161932082U3CCU9BX8YNEHR',
+        'akash.kumar@digio.in',
+        'GWT251203161932104GFDCZMDJQUOE1S'
       )
       .then((res: any) => {
         console.log(res);

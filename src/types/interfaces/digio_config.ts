@@ -7,4 +7,5 @@ export interface DigioConfig {
   environment?: Environment;
   theme?: Theme;
   serviceMode?: ServiceMode;
+  isGlobal?: boolean;
 }

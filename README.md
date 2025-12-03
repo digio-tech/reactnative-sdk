@@ -21,7 +21,7 @@ Instantiate the Digio instance with `environment` & other options
 ```tsx
 import { Digio, DigioConfig, DigioResponse, ServiceMode } from '@digiotech/react-native';
 
-const config: DigioConfig = { environment: Environment.PRODUCTION, serviceMode: ServiceMode.OTP  };
+const config: DigioConfig = { environment: Environment.PRODUCTION, serviceMode: ServiceMode.OTP, isGlobal: false  };
 const digio = new Digio(config);
 const documentId = "<document_id>";
 const identifier = "<email_or_phone>";
@@ -73,7 +73,7 @@ function YourComponent() {
   }, []);
 
   const triggerDigioGateway = async () => {
-    const config: DigioConfig = { environment: Environment.PRODUCTION, serviceMode: ServiceMode.OTP };
+    const config: DigioConfig = { environment: Environment.PRODUCTION, serviceMode: ServiceMode.OTP, isGlobal: false };
     const digio = new Digio(config);
     const documentId = "<document_id>";
     const identifier = "<email_or_phone>";

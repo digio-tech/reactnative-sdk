@@ -203,6 +203,9 @@ public class DigioReactNativeModule extends ReactContextBaseJavaModule implement
       String environment = config.getString("environment");
       String logo = config.getString("logo");
       String mode = config.getString("mode");
+      boolean global = config.hasKey("global") ? config.getBoolean("global") : false;
+
+
       // Log.e("Digio_mode ", ""+mode);
       if (!TextUtils.isEmpty(environment)) {
         try {
@@ -248,6 +251,8 @@ public class DigioReactNativeModule extends ReactContextBaseJavaModule implement
       digioConfig.setRequestId(documentId);
       digioConfig.setUserIdentifier(identifier);
       digioConfig.setLinkApproach(false);
+      digioConfig.setGlobal(global);
+
 
       HashMap additionalDataMap = new HashMap();
       if (additionalData != null) {

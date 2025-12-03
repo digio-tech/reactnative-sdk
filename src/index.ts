@@ -87,6 +87,7 @@ export class Digio {
       environment: this.config.environment,
       logo: this.config.logo,
       mode: this.config.serviceMode,
+      global: this.config.isGlobal,
       ...this.config.theme,
     };
   }
