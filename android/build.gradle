@@ -104,7 +104,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
 // core dependencies
-  implementation(platform("com.github.digio-tech:digio-bom:v1.0.30"))
+  implementation(platform("com.github.digio-tech:digio-bom:v1.0.38"))
   implementation("androidx.appcompat:appcompat")
   implementation("com.google.android.material:material")
   implementation("androidx.navigation:navigation-fragment-ktx")

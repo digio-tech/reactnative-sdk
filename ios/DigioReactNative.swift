@@ -39,12 +39,13 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
                         fontFormat = config?["fontFormat"] as? String;
                         fontFamily = config?["fontFamily"] as? String;
                         fontUrl = config?["fontUrl"] as? String;
+                        let global = config?["global"] as? Bool ?? false
 
                         if documentId.hasPrefix("ENA") || documentId.hasPrefix("DID") {
-                            try self.startSign(rootViewController: rootViewController!, documentId: documentId, identifier: identifier, tokenId: tokenId, environment: environment, primaryColor: primaryColor, fontFormat: fontFormat, fontFamily: fontFamily, fontUrl: fontUrl, logo: logo, additionalParams: additionalParams)
+                          try self.startSign(rootViewController: rootViewController!, documentId: documentId, identifier: identifier, tokenId: tokenId, environment: environment, primaryColor: primaryColor, fontFormat: fontFormat, fontFamily: fontFamily, fontUrl: fontUrl, logo: logo, additionalParams: additionalParams,isGlobal: global)
                                 .build()
                         }else{
-                            try self.startKyc(rootViewController: rootViewController!, documentId: documentId, identifier: identifier, tokenId: tokenId, environment: environment, primaryColor: primaryColor, fontFormat: fontFormat, fontFamily: fontFamily, fontUrl: fontUrl, logo: logo, additionalParams: additionalParams)
+                            try self.startKyc(rootViewController: rootViewController!, documentId: documentId, identifier: identifier, tokenId: tokenId, environment: environment, primaryColor: primaryColor, fontFormat: fontFormat, fontFamily: fontFamily, fontUrl: fontUrl, logo: logo, additionalParams: additionalParams, isGlobal: global)
                                 .build()
                         }
 
@@ -59,7 +60,7 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
 
     private func startKyc(rootViewController: UIViewController,documentId: String, identifier: String, tokenId: String?,
                           environment: String,primaryColor: String?,fontFormat: String?,
-                          fontFamily: String?,fontUrl: String?,logo: String?,additionalParams: [String:String]?) -> DigioKycBuilder {
+                          fontFamily: String?,fontUrl: String?,logo: String?,additionalParams: [String:String]?, isGlobal:Bool) -> DigioKycBuilder {
         print("...........starting kyc.............")
         return DigioKycBuilder()
             .withController(viewController: rootViewController)
@@ -73,12 +74,13 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
             .setFontFamily(fontFamily: fontFamily ?? "")
             .setFontUrl(fontUrl: fontUrl ?? "")
             .setLogo(logo: logo ?? "")
+            .setGlobal(global: isGlobal)
             .setAdditionalParams(additionalParams: additionalParams ?? [:])
 
     }
 
     private func startSign(rootViewController: UIViewController,documentId: String, identifier: String, tokenId: String?,
-                              environment: String,primaryColor: String?,fontFormat: String?,fontFamily: String?,fontUrl: String?,logo: String?,additionalParams: [String:String]?) -> DigioBuilder{
+                              environment: String,primaryColor: String?,fontFormat: String?,fontFamily: String?,fontUrl: String?,logo: String?,additionalParams: [String:String]?, isGlobal:Bool) -> DigioBuilder{
         print("...........starting sign.............")
         return DigioBuilder()
             .withController(viewController: rootViewController)
@@ -92,6 +94,7 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
             .setFontFamily(fontFamily: fontFamily ?? "")
             .setFontUrl(fontUrl: fontUrl ?? "")
             .setLogo(logo: logo ?? "")
+            .setGlobal(global: isGlobal)
             .setAdditionalParams(additionalParams: additionalParams ?? [:])
             .setServiceMode(serviceMode: DigioServiceMode.OTP)
     }

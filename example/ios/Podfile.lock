@@ -1,14 +1,14 @@
 PODS:
   - boost (1.83.0)
   - CocoaAsyncSocket (7.6.5)
-  - digio-react-native (2.0.4):
+  - digio-react-native (2.0.6):
     - DigioEsignSDK
     - DigiokycSDK
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - DigioEsignSDK (1.0.9)
-  - DigiokycSDK (1.3.0)
+  - DigioEsignSDK (1.0.11)
+  - DigiokycSDK (2.0.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.73.11)
   - FBReactNativeSpec (0.73.11):
@@ -1320,9 +1320,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  digio-react-native: 25d59ee7b30521a8528e45c124b413058b58050d
-  DigioEsignSDK: 332390c3775c662da6ca2671be4a13aa01901bfe
-  DigiokycSDK: c7e9cf3470ab0e028caad3f3f836515ce3ddc865
+  digio-react-native: 2d11964d74731e3f5a59f6620f7d2f83b1543cde
+  DigioEsignSDK: 6dd659b244c9217d9e95f4923f3f1b87fd09394b
+  DigiokycSDK: 81c33a2dcc2b1d65715697e13e570acdbeecbd24
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   FBLazyVector: b46891061bfe0a9b07f601813114c8653a72a45c
   FBReactNativeSpec: 9a01850c21d81027fa7b20b9dcc25d9bfae083da
