@@ -104,7 +104,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
 // core dependencies
-  implementation(platform("com.github.digio-tech:digio-bom:v1.0.38"))
+  implementation(platform("com.github.digio-tech:digio-bom:v1.0.42"))
   implementation("androidx.appcompat:appcompat")
   implementation("com.google.android.material:material")
   implementation("androidx.navigation:navigation-fragment-ktx")
@@ -137,7 +137,7 @@ dependencies {
   implementation("com.github.digio-tech:image_processor")
   implementation("androidx.exifinterface:exifinterface")
 
-  implementation("com.github.digio-tech:sdk_ml_camera")
+ implementation("com.github.digio-tech:sdk_ml_camera")
 //  implementation("com.google.mlkit:face-detection")
   implementation("com.google.android.gms:play-services-mlkit-face-detection")
 
@@ -161,6 +161,8 @@ dependencies {
   implementation("org.simpleframework:simple-xml")
   implementation("com.github.bumptech.glide:glide")
 
+  implementation ("com.airbnb.android:lottie:6.6.6")
+  implementation("androidx.core:core-animation:1.0.0")
 
 }
 

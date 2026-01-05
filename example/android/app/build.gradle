@@ -110,7 +110,7 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    // implementation fileTree(dir: 'libs', include: ['*.aar'])
+//     implementation fileTree(dir: 'libs', include: ['*.aar'])
 //    implementation 'com.github.digio-tech:gateway_kyc:v4.0.20'
     implementation 'com.github.digio-tech:protean-esign:v3.12'
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
