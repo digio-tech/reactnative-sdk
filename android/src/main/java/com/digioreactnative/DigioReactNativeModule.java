@@ -47,7 +47,7 @@ import in.digio.sdk.gateway.model.DigioTheme;
 public class DigioReactNativeModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
   public static final String NAME = "DigioReactNative";
 
-  public static final String AAR_VERSION = "5.0.1";
+  public static final String AAR_VERSION = "5.1.22";
   public static final int DIGIO_ACTIVITY = 73457843;
   private Promise resultPromise;
   private boolean isReceiverRegistered = false;

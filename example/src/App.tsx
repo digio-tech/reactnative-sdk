@@ -33,9 +33,9 @@ export default function App() {
   const startDigioFlow = () => {
     digioRef.current
       ?.start(
-        'KID260105170017231VSUZE4S6YY7Y59',
-        'akash.kumar@digio.in',
-        'GWT260105170017251CLGKYRDL4AHNZS'
+        'KID26021XXXXXLBW28HIII62OG3',
+        'ak@digio.in',
+        'GWT2602181XXXX7CBA4QATGPUAQTS'
       )
       .then((res: any) => {
         console.log(res);
