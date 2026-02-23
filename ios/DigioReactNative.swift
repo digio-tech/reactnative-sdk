@@ -5,14 +5,112 @@ import Foundation
 import DigioEsignSDK
 
 @objc(DigioReactNative)
-class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDelegate {
-
+class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDelegate, DigioResponseDelegate {
+ 
     var result: RCTPromiseResolveBlock!
 
     override func supportedEvents() -> [String]! {
         return ["gatewayEvent"]
     }
+  
 
+  @objc(startStateless:withResolver:withRejecter:)
+  func startStateless(
+      config: NSDictionary?,
+      resolve: @escaping RCTPromiseResolveBlock,
+      reject: @escaping RCTPromiseRejectBlock
+  ) {
+
+      self.result = resolve
+
+      guard let config = config else {
+          reject("Error", "Config missing", nil)
+          return
+      }
+    
+    launchStatelessSDK(config: config, reject: reject)
+  }
+
+  private func launchStatelessSDK(
+      config: NSDictionary,
+      reject: @escaping RCTPromiseRejectBlock
+  ) {
+    
+    DispatchQueue.main.async {    
+      guard let sdkEnvironment = self.requiredString(
+    "environment",
+    from: config,
+    reject: reject
+    ) else { return }
+
+      guard let clientId = self.requiredString(
+    "clientId",
+    from: config,
+    reject: reject
+    ) else { return }
+
+      guard let clientSecretKey = self.requiredString(
+    "clientSecretKey",
+    from: config,
+    reject: reject
+    ) else { return }
+        
+      let logo = config["logo"] as? String
+      let taskTypes = config["taskTypes"] as? [String] ?? ["SELFIE"]
+      
+      // Capture config
+          var captureConfig = CaptureConfig()
+          captureConfig.isImagePreview = true
+          captureConfig.locationRequired = config["locationRequired"] as? Bool ?? false
+          captureConfig.shouldShowInstructions = config["shouldShowInstructions"] as? Bool ?? false
+          captureConfig.logoUrl = logo
+      
+      
+      var digioTaskList = Array<DigioTaskRequest>()
+
+          for task in taskTypes {
+              let request = DigioTaskRequest()
+
+              switch task {
+              case "SELFIE":
+                 request.taskType = .SELFIE
+              default:
+                  continue
+              }
+
+              digioTaskList.append(request)
+          }
+      
+      let rootViewController = UIApplication.shared.windows.filter({ (w) -> Bool in
+          return w.isHidden == false
+      }).first?.rootViewController
+      
+      if rootViewController != nil {
+        do{
+          try DigioKycBuilder()
+            .withController(viewController: rootViewController!)
+            .setLogo(logo: logo ?? "")
+            .setEnvironment(environment: sdkEnvironment.elementsEqual("sandbox") ? DigioEnvironment.SANDBOX : DigioEnvironment.PRODUCTION)
+            .addTaskList(taskList: digioTaskList)
+            .setReferenceIdUninqueRequestId(
+                referenceId: "",
+                uniqueRequestId: ""
+            )
+           .setCaptureConfig(captureConfig: captureConfig)
+            .setStatelessResponseDelegate(delegate: self)
+            .build(
+                clientId: clientId,
+                clientSecretKey: clientSecretKey
+            )
+        }catch {
+          reject("Error", error.localizedDescription, error)
+        }
+      }else{
+        reject("Error", "Root view controller not found", nil)
+      }
+    }
+  }
+  
     @objc(start:withIdentifier:withTokenId:withAdditionalData:withConfig:withResolver:withRejecter:)
     func start(documentId: String, identifier: String, tokenId: String?, additionalData: NSDictionary?, config: NSDictionary?, resolve:@escaping RCTPromiseResolveBlock,reject:@escaping RCTPromiseRejectBlock) -> Void {
         self.result = resolve;
@@ -45,12 +143,13 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
                           try self.startSign(rootViewController: rootViewController!, documentId: documentId, identifier: identifier, tokenId: tokenId, environment: environment, primaryColor: primaryColor, fontFormat: fontFormat, fontFamily: fontFamily, fontUrl: fontUrl, logo: logo, additionalParams: additionalParams,isGlobal: global)
                                 .build()
                         }else{
-                            try self.startKyc(rootViewController: rootViewController!, documentId: documentId, identifier: identifier, tokenId: tokenId, environment: environment, primaryColor: primaryColor, fontFormat: fontFormat, fontFamily: fontFamily, fontUrl: fontUrl, logo: logo, additionalParams: additionalParams, isGlobal: global)
-                                .build()
+                           try self.startKyc(rootViewController: rootViewController!, documentId: documentId, identifier: identifier, tokenId: tokenId, environment: environment, primaryColor: primaryColor, fontFormat: fontFormat, fontFamily: fontFamily, fontUrl: fontUrl, logo: logo, additionalParams: additionalParams, isGlobal: global)
+                               .build()
                         }
 
                     } catch let error {
                         print("Exception --> \(error.localizedDescription)")
+                        reject("Error", error.localizedDescription, error)
                     }
                 } else {
                   reject("Error", "Root view controller not found", nil)
@@ -169,6 +268,61 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
          print("onGatewayEvent esign \(event)")
          self.sendEvent(withName: "gatewayEvent", body: convertToDictionary(text: event))
      }
+  
+  /** stateless callbacks */
+  
+  func onDigioStatelessResponseSuccess(response: [DigiokycSDK.DigioTaskResponse]) {
+    print("Success stateless \(response)")
+    if self.result != nil {
+        self.result(makeResultArray(from: response))
+      }
+  }
+  
+  func onDigioStatelessResponseFailure(response: [DigiokycSDK.DigioTaskResponse]) {
+    print("Failure stateless \(response)")
+     if self.result != nil {
+        self.result(makeResultArray(from: response))
+      }
+  }
+  
+  func onDigioEventTracker(event: String) {
+    print("onGatewayEvent stateless \(event)")
+    self.sendEvent(withName: "gatewayEvent", body: convertToDictionary(text: event))
+  }
 
+
+func makeResultMap(from task: DigiokycSDK.DigioTaskResponse) -> [String: Any] {
+
+    return [
+        "status": task.success,
+        "taskType": task.task?.taskType?.rawValue ?? "",
+        "response": task.response["response"] as? [String: Any] ?? [:]
+    ]
+}
+
+func makeResultArray(
+    from response: [DigiokycSDK.DigioTaskResponse]
+) -> [[String: Any]] {
+
+    return response.map { task in
+        makeResultMap(from: task)
+    }
+}
+
+private func requiredString(
+    _ key: String,
+    from config: NSDictionary,
+    reject: RCTPromiseRejectBlock
+) -> String? {
+
+    guard let value = config[key] as? String,
+          !value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+
+        reject("Error", "Missing mandatory param: \(key)", nil)
+        return nil
+    }
+
+    return value
+}
 
 }

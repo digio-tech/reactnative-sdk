@@ -1,14 +1,14 @@
 PODS:
   - boost (1.83.0)
   - CocoaAsyncSocket (7.6.5)
-  - digio-react-native (2.0.8):
+  - digio-react-native (2.0.9):
     - DigioEsignSDK
     - DigiokycSDK
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - DigioEsignSDK (1.0.11)
-  - DigiokycSDK (2.0.0)
+  - DigiokycSDK (2.0.3)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.73.11)
   - FBReactNativeSpec (0.73.11):
@@ -1320,9 +1320,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  digio-react-native: eb57d59e0d5b2e7ed0ab357d74429795edcf144a
+  digio-react-native: ec974d557ebf4b0344bfa6cd520292c05ce121b3
   DigioEsignSDK: 6dd659b244c9217d9e95f4923f3f1b87fd09394b
-  DigiokycSDK: 81c33a2dcc2b1d65715697e13e570acdbeecbd24
+  DigiokycSDK: 2bc28001a4442be8d935ff3e1ec4512b4fae5195
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   FBLazyVector: b46891061bfe0a9b07f601813114c8653a72a45c
   FBReactNativeSpec: 9a01850c21d81027fa7b20b9dcc25d9bfae083da
@@ -1383,6 +1383,6 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: a813a6d82538ccba91c54406404e3ed80b48a692
 
-PODFILE CHECKSUM: 0ee706da6f5af172ee9ac0cf8ec769ce173ae9c5
+PODFILE CHECKSUM: 02b7332b3a1593e3fcee5b896af9ca000a0740cd
 
 COCOAPODS: 1.16.2

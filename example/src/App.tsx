@@ -33,9 +33,9 @@ export default function App() {
   const startDigioFlow = () => {
     digioRef.current
       ?.start(
-        'KID2602XXXXXL69FE11DJDEDVQ',
+        'KID26022XXXXX2996LOVUKSGYN',
         'ak@digio.in',
-        'GWT2602XXXX1EM5TSSGQE3N6S'
+        'GWT2602231XXXXXWEOCTQPO9ECS'
       )
       .then((res: any) => {
         console.log(res);
@@ -45,6 +45,22 @@ export default function App() {
       })
       .catch((err: any) => console.error(err));
   };
+
+  const startStatelessFlow = () => {
+  digioRef.current
+    ?.startStateless({
+      clientId: "Your Client ID",
+      clientSecretKey: "Your Client Secret Key",
+      taskTypes: ["SELFIE"],
+      locationRequired: true,
+      shouldShowInstructions: false,
+    })
+    .then((res: any) => {
+      console.log(res);
+      setDigioResult(res);
+    })
+    .catch((err: any) => console.error(err));
+};
 
   return (
     <View style={styles.container}>
@@ -62,6 +78,11 @@ export default function App() {
       <TouchableOpacity style={styles.fab} onPress={startDigioFlow}>
         <Text style={styles.fabText}>+</Text>
       </TouchableOpacity>
+      
+      {/* Floating Action Button 2 */}
+    <TouchableOpacity style={styles.fabSecond} onPress={startStatelessFlow}>
+      <Text style={styles.fabText}>⚡</Text>
+    </TouchableOpacity>
     </View>
   );
 }
@@ -96,6 +117,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 5,
   },
+  fabSecond: {
+  position: 'absolute',
+  bottom: 30,
+  right: 90, // move left so it doesn't overlap
+  width: 60,
+  height: 60,
+  borderRadius: 30,
+  backgroundColor: '#03dac6',
+  justifyContent: 'center',
+  alignItems: 'center',
+  elevation: 5,
+},
   fabText: {
     color: '#fff',
     fontSize: 30,

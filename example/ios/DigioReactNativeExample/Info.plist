@@ -51,9 +51,9 @@
 	<string>$(PRODUCT_NAME) would like to access your photo.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
-	<key>UIRequiredDeviceCapabilities</key>
+  <key>UIRequiredDeviceCapabilities</key>
 	<array>
-		<string>armv7</string>
+    <string>arm64</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
@@ -65,3 +65,4 @@
 	<false/>
 </dict>
 </plist>
+<!--    <string>armv7</string>-->
