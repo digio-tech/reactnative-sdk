@@ -95,11 +95,12 @@ export class Digio {
   async startStateless(
   config: {
     clientId: string;
-    clientSecretKey: string;
+    clientSecretKey?: string;
     taskTypes?: string[];
     isImagePreview?: boolean;
     locationRequired?: boolean;
     shouldShowInstructions?: boolean;
+    token?: string;
   }
 ): Promise<DigioResponse> {
   return DigioReactNative.startStateless({

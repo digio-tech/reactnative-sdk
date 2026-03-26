@@ -53,7 +53,13 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
     "clientSecretKey",
     from: config,
     reject: reject
-    ) else { return }
+    ) 
+    // else { return }
+
+    let clientToken = self.requiredString( "token",
+    from: config,
+    reject: reject
+    ) 
         
       let logo = config["logo"] as? String
       let taskTypes = config["taskTypes"] as? [String] ?? ["SELFIE"]
@@ -98,10 +104,14 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
             )
            .setCaptureConfig(captureConfig: captureConfig)
             .setStatelessResponseDelegate(delegate: self)
-            .build(
-                clientId: clientId,
-                clientSecretKey: clientSecretKey
-            )
+            // .build(
+            //     clientId: clientId,
+            //     clientSecretKey: clientSecretKey
+            // )
+            .build(token: clientToken,
+                        clientId: clientId
+                       )
+            
         }catch {
           reject("Error", error.localizedDescription, error)
         }
