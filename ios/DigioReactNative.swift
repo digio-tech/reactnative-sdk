@@ -6,13 +6,13 @@ import DigioEsignSDK
 
 @objc(DigioReactNative)
 class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDelegate, DigioResponseDelegate {
- 
+
     var result: RCTPromiseResolveBlock!
 
     override func supportedEvents() -> [String]! {
         return ["gatewayEvent"]
     }
-  
+
 
   @objc(startStateless:withResolver:withRejecter:)
   func startStateless(
@@ -27,7 +27,7 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
           reject("Error", "Config missing", nil)
           return
       }
-    
+
     launchStatelessSDK(config: config, reject: reject)
   }
 
@@ -35,8 +35,8 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
       config: NSDictionary,
       reject: @escaping RCTPromiseRejectBlock
   ) {
-    
-    DispatchQueue.main.async {    
+
+    DispatchQueue.main.async {
       guard let sdkEnvironment = self.requiredString(
     "environment",
     from: config,
@@ -53,25 +53,25 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
     "clientSecretKey",
     from: config,
     reject: reject
-    ) 
+    )
     // else { return }
 
     let clientToken = self.requiredString( "token",
     from: config,
     reject: reject
-    ) 
-        
+    )
+
       let logo = config["logo"] as? String
       let taskTypes = config["taskTypes"] as? [String] ?? ["SELFIE"]
-      
+
       // Capture config
           var captureConfig = CaptureConfig()
           captureConfig.isImagePreview = true
           captureConfig.locationRequired = config["locationRequired"] as? Bool ?? false
           captureConfig.shouldShowInstructions = config["shouldShowInstructions"] as? Bool ?? false
           captureConfig.logoUrl = logo
-      
-      
+
+
       var digioTaskList = Array<DigioTaskRequest>()
 
           for task in taskTypes {
@@ -86,17 +86,25 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
 
               digioTaskList.append(request)
           }
-      
+
       let rootViewController = UIApplication.shared.windows.filter({ (w) -> Bool in
           return w.isHidden == false
       }).first?.rootViewController
-      
+
       if rootViewController != nil {
         do{
+        let env = sdkEnvironment.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+
+            let digioEnv: DigioEnvironment =
+                env == "sandbox" ? DigioEnvironment.SANDBOX :
+                env == "development" ? DigioEnvironment.DEV :
+                DigioEnvironment.PRODUCTION
+
           try DigioKycBuilder()
             .withController(viewController: rootViewController!)
             .setLogo(logo: logo ?? "")
-            .setEnvironment(environment: sdkEnvironment.elementsEqual("sandbox") ? DigioEnvironment.SANDBOX : DigioEnvironment.PRODUCTION)
+//             .setEnvironment(environment: sdkEnvironment.elementsEqual("sandbox") ? DigioEnvironment.SANDBOX : DigioEnvironment.PRODUCTION)
+            .setEnvironment(environment: digioEnv)
             .addTaskList(taskList: digioTaskList)
             .setReferenceIdUninqueRequestId(
                 referenceId: "",
@@ -111,7 +119,7 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
             .build(token: clientToken,
                         clientId: clientId
                        )
-            
+
         }catch {
           reject("Error", error.localizedDescription, error)
         }
@@ -120,7 +128,7 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
       }
     }
   }
-  
+
     @objc(start:withIdentifier:withTokenId:withAdditionalData:withConfig:withResolver:withRejecter:)
     func start(documentId: String, identifier: String, tokenId: String?, additionalData: NSDictionary?, config: NSDictionary?, resolve:@escaping RCTPromiseResolveBlock,reject:@escaping RCTPromiseRejectBlock) -> Void {
         self.result = resolve;
@@ -278,23 +286,23 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
          print("onGatewayEvent esign \(event)")
          self.sendEvent(withName: "gatewayEvent", body: convertToDictionary(text: event))
      }
-  
+
   /** stateless callbacks */
-  
+
   func onDigioStatelessResponseSuccess(response: [DigiokycSDK.DigioTaskResponse]) {
     print("Success stateless \(response)")
     if self.result != nil {
         self.result(makeResultArray(from: response))
       }
   }
-  
+
   func onDigioStatelessResponseFailure(response: [DigiokycSDK.DigioTaskResponse]) {
     print("Failure stateless \(response)")
      if self.result != nil {
         self.result(makeResultArray(from: response))
       }
   }
-  
+
   func onDigioEventTracker(event: String) {
     print("onGatewayEvent stateless \(event)")
     self.sendEvent(withName: "gatewayEvent", body: convertToDictionary(text: event))
