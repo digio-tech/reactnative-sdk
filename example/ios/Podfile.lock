@@ -1,14 +1,24 @@
 PODS:
   - boost (1.83.0)
   - CocoaAsyncSocket (7.6.5)
-  - digio-react-native (2.0.9):
+  - digio-react-native (2.0.11-beta.7):
+    - digio-react-native/CaptureKit (= 2.0.11-beta.7)
     - DigioEsignSDK
     - DigiokycSDK
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
+  - digio-react-native/CaptureKit (2.0.11-beta.7):
+    - DigioCaptureKit
+    - DigioEsignSDK
+    - DigiokycSDK
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
+  - DigioCaptureKit (2.0.2):
+    - GoogleMLKit/FaceDetection
   - DigioEsignSDK (1.0.11)
-  - DigiokycSDK (2.0.3)
+  - DigiokycSDK (2.0.3-beta.1)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.73.11)
   - FBReactNativeSpec (0.73.11):
@@ -76,11 +86,57 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - glog (0.3.5)
+  - GoogleDataTransport (10.1.0):
+    - nanopb (~> 3.30910.0)
+    - PromisesObjC (~> 2.4)
+  - GoogleMLKit/FaceDetection (9.0.0):
+    - GoogleMLKit/MLKitCore
+    - MLKitFaceDetection (~> 8.0.0)
+  - GoogleMLKit/MLKitCore (9.0.0):
+    - MLKitCommon (~> 14.0.0)
+  - GoogleToolboxForMac/Defines (4.2.1)
+  - GoogleToolboxForMac/Logger (4.2.1):
+    - GoogleToolboxForMac/Defines (= 4.2.1)
+  - "GoogleToolboxForMac/NSData+zlib (4.2.1)":
+    - GoogleToolboxForMac/Defines (= 4.2.1)
+  - GoogleUtilities/Environment (8.1.0):
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Logger (8.1.0):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Privacy (8.1.0)
+  - GoogleUtilities/UserDefaults (8.1.0):
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Privacy
+  - GTMSessionFetcher/Core (3.5.0)
   - hermes-engine (0.73.11):
     - hermes-engine/Pre-built (= 0.73.11)
   - hermes-engine/Pre-built (0.73.11)
   - libevent (2.1.12)
+  - MLImage (1.0.0-beta8)
+  - MLKitCommon (14.0.0):
+    - GoogleDataTransport (~> 10.0)
+    - GoogleToolboxForMac/Logger (< 5.0, >= 4.2.1)
+    - "GoogleToolboxForMac/NSData+zlib (< 5.0, >= 4.2.1)"
+    - GoogleUtilities/Logger (~> 8.0)
+    - GoogleUtilities/UserDefaults (~> 8.0)
+    - GTMSessionFetcher/Core (< 4.0, >= 3.3.2)
+  - MLKitFaceDetection (8.0.0):
+    - MLKitCommon (~> 14.0)
+    - MLKitVision (~> 10.0)
+  - MLKitVision (10.0.0):
+    - GoogleToolboxForMac/Logger (< 5.0, >= 4.2.1)
+    - "GoogleToolboxForMac/NSData+zlib (< 5.0, >= 4.2.1)"
+    - GTMSessionFetcher/Core (< 4.0, >= 3.3.2)
+    - MLImage (= 1.0.0-beta8)
+    - MLKitCommon (~> 14.0)
+  - nanopb (3.30910.0):
+    - nanopb/decode (= 3.30910.0)
+    - nanopb/encode (= 3.30910.0)
+  - nanopb/decode (3.30910.0)
+  - nanopb/encode (3.30910.0)
   - OpenSSL-Universal (1.1.1100)
+  - PromisesObjC (2.4.0)
   - RCT-Folly (2022.05.16.00):
     - boost
     - DoubleConversion
@@ -1125,6 +1181,7 @@ PODS:
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - digio-react-native (from `../..`)
+  - DigiokycSDK (from `https://github.com/digio-tech/digio-iOS-KYC-SDK.git`, tag `2.0.3-beta.1`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
@@ -1201,8 +1258,8 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - CocoaAsyncSocket
+    - DigioCaptureKit
     - DigioEsignSDK
-    - DigiokycSDK
     - Flipper
     - Flipper-Boost-iOSX
     - Flipper-DoubleConversion
@@ -1212,8 +1269,19 @@ SPEC REPOS:
     - Flipper-PeerTalk
     - FlipperKit
     - fmt
+    - GoogleDataTransport
+    - GoogleMLKit
+    - GoogleToolboxForMac
+    - GoogleUtilities
+    - GTMSessionFetcher
     - libevent
+    - MLImage
+    - MLKitCommon
+    - MLKitFaceDetection
+    - MLKitVision
+    - nanopb
     - OpenSSL-Universal
+    - PromisesObjC
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -1221,6 +1289,9 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   digio-react-native:
     :path: "../.."
+  DigiokycSDK:
+    :git: https://github.com/digio-tech/digio-iOS-KYC-SDK.git
+    :tag: 2.0.3-beta.1
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   FBLazyVector:
@@ -1317,12 +1388,18 @@ EXTERNAL SOURCES:
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
+CHECKOUT OPTIONS:
+  DigiokycSDK:
+    :git: https://github.com/digio-tech/digio-iOS-KYC-SDK.git
+    :tag: 2.0.3-beta.1
+
 SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  digio-react-native: ec974d557ebf4b0344bfa6cd520292c05ce121b3
+  digio-react-native: aff9f5ec83d45d7b288f108c666f11701381cdad
+  DigioCaptureKit: abacd6dddbb957485e2aa0d15a3f1eb4ae4fac31
   DigioEsignSDK: 6dd659b244c9217d9e95f4923f3f1b87fd09394b
-  DigiokycSDK: 2bc28001a4442be8d935ff3e1ec4512b4fae5195
+  DigiokycSDK: 3a49c30468487d75696ed98d0f0130919da4a77e
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   FBLazyVector: b46891061bfe0a9b07f601813114c8653a72a45c
   FBReactNativeSpec: 9a01850c21d81027fa7b20b9dcc25d9bfae083da
@@ -1336,9 +1413,20 @@ SPEC CHECKSUMS:
   FlipperKit: 37525a5d056ef9b93d1578e04bc3ea1de940094f
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
+  GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
+  GoogleMLKit: b1eee21a41c57704fe72483b15c85cb2c0cd7444
+  GoogleToolboxForMac: d1a2cbf009c453f4d6ded37c105e2f67a32206d8
+  GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
+  GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   hermes-engine: d992945b77c506e5164e6a9a77510c9d57472c59
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
+  MLImage: 0de5c6c2bf9e93b80ef752e2797f0836f03b58c0
+  MLKitCommon: 47d47b50a031d00db62f1b0efe5a1d8b09a3b2e6
+  MLKitFaceDetection: 32549f1e70e6e7731261bf9cea2b74095e2531cb
+  MLKitVision: 39a5a812db83c4a0794445088e567f3631c11961
+  nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
+  PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0
   RCTRequired: 415e56f7c33799a6483e41e4dce607f3daf1e69b
   RCTTypeSafety: e984a88e713281c2d8c2309a1a6d2775af0107ae
@@ -1383,6 +1471,6 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: a813a6d82538ccba91c54406404e3ed80b48a692
 
-PODFILE CHECKSUM: 02b7332b3a1593e3fcee5b896af9ca000a0740cd
+PODFILE CHECKSUM: ca0a9678579c097a073b88e55193cd52273563f5
 
 COCOAPODS: 1.16.2

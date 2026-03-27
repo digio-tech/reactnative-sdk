@@ -49,18 +49,20 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
     reject: reject
     ) else { return }
 
-      guard let clientSecretKey = self.requiredString(
-    "clientSecretKey",
-    from: config,
-    reject: reject
-    )
-    // else { return }
+    // guard let clientSecretKey = self.requiredString(
+    // "clientSecretKey",
+    // from: config,
+    // reject: reject
+    // )else { return }
 
-    let clientToken = self.requiredString( "token",
-    from: config,
-    reject: reject
-    )
+     guard let clientToken = self.requiredString( "token",
+     from: config,
+     reject: reject
+     )else{return}
 
+      let clientSecretKey = self.optionalString("clientSecretKey", from: config)
+//      let clientToken = optionalString("token", from: config)
+      
       let logo = config["logo"] as? String
       let taskTypes = config["taskTypes"] as? [String] ?? ["SELFIE"]
 
@@ -93,18 +95,19 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
 
       if rootViewController != nil {
         do{
-        let env = sdkEnvironment.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-
-            let digioEnv: DigioEnvironment =
-                env == "sandbox" ? DigioEnvironment.SANDBOX :
-                env == "development" ? DigioEnvironment.DEV :
-                DigioEnvironment.PRODUCTION
 
           try DigioKycBuilder()
             .withController(viewController: rootViewController!)
             .setLogo(logo: logo ?? "")
 //             .setEnvironment(environment: sdkEnvironment.elementsEqual("sandbox") ? DigioEnvironment.SANDBOX : DigioEnvironment.PRODUCTION)
-            .setEnvironment(environment: digioEnv)
+            .setEnvironment(
+                environment:
+                  sdkEnvironment.lowercased().elementsEqual("sandbox")
+                    ? DigioEnvironment.SANDBOX
+                    : sdkEnvironment.lowercased().elementsEqual("development")
+                        ? DigioEnvironment.DEV
+                        : DigioEnvironment.PRODUCTION
+            )
             .addTaskList(taskList: digioTaskList)
             .setReferenceIdUninqueRequestId(
                 referenceId: "",
@@ -341,6 +344,13 @@ private func requiredString(
     }
 
     return value
+}
+
+func optionalString(_ key: String, from config: NSDictionary) -> String? {
+    guard let value = config[key] as? String else { return nil }
+    
+    let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+    return trimmed.isEmpty ? nil : trimmed
 }
 
 }
