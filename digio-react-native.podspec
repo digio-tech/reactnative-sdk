@@ -14,12 +14,20 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => "15.1" }
   s.source       = { :git => "https://github.com/digio-tech/reactnative-sdk.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/**/*.{h,m,mm,swift}"
+  s.default_subspecs = 'Core'
+  # Core (default)
+    s.subspec 'Core' do |core|
+      core.source_files = "ios/**/*.{h,m,mm,swift}"
+      core.dependency 'DigiokycSDK'
+      core.dependency 'DigioEsignSDK'
+    end
+
+#   s.source_files = "ios/**/*.{h,m,mm,swift}"
 #   enable below to run local xcframework
 # s.vendored_frameworks = 'ios/DigiokycSDK.xcframework'
-  s.dependency 'DigiokycSDK'
-  s.dependency 'DigioEsignSDK'
-#   s.dependency 'DigioCaptureKit'
+#   s.dependency 'DigiokycSDK'
+#   s.dependency 'DigioEsignSDK'
+
   # Optional CaptureKit
   s.subspec 'CaptureKit' do |capture|
     capture.dependency 'DigioCaptureKit'
