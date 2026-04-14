@@ -96,15 +96,14 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
       if rootViewController != nil {
         do{
 
-          try DigioKycBuilder()
+          let builder = try DigioKycBuilder()
             .withController(viewController: rootViewController!)
             .setLogo(logo: logo ?? "")
-//             .setEnvironment(environment: sdkEnvironment.elementsEqual("sandbox") ? DigioEnvironment.SANDBOX : DigioEnvironment.PRODUCTION)
             .setEnvironment(
                 environment:
-                  sdkEnvironment.lowercased().elementsEqual("sandbox")
+                    sdkEnvironment.lowercased() == "sandbox"
                     ? DigioEnvironment.SANDBOX
-                    : sdkEnvironment.lowercased().elementsEqual("development")
+                    : sdkEnvironment.lowercased() == "development"
                         ? DigioEnvironment.DEV
                         : DigioEnvironment.PRODUCTION
             )
@@ -113,15 +112,20 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
                 referenceId: "",
                 uniqueRequestId: ""
             )
-           .setCaptureConfig(captureConfig: captureConfig)
+            .setCaptureConfig(captureConfig: captureConfig)
             .setStatelessResponseDelegate(delegate: self)
-            // .build(
-            //     clientId: clientId,
-            //     clientSecretKey: clientSecretKey
-            // )
-            .build(token: clientToken,
-                        clientId: clientId
-                       )
+
+        if clientToken.isEmpty {
+            try builder.build(
+                clientId: clientId,
+                clientSecretKey: clientSecretKey
+            )
+        } else {
+            try builder.build(
+                token: clientToken,
+                clientId: clientId
+            )
+        }
 
         }catch {
           reject("Error", error.localizedDescription, error)
