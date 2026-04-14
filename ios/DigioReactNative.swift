@@ -55,11 +55,12 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
     // reject: reject
     // )else { return }
 
-     guard let clientToken = self.requiredString( "token",
-     from: config,
-     reject: reject
-     )else{return}
+    //  guard let clientToken = self.requiredString( "token",
+    //  from: config,
+    //  reject: reject
+    //  )else{return}
 
+     let clientToken = self.optionalString("token", from: config) ?? ""
     //   let clientSecretKey = self.optionalString("clientSecretKey", from: config)
       let clientSecretKey = self.optionalString("clientSecretKey", from: config) ?? ""
 //      let clientToken = optionalString("token", from: config)
