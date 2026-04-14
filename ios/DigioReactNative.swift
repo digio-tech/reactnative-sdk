@@ -60,7 +60,8 @@ class DigioReactNative: RCTEventEmitter, DigioKycResponseDelegate,DigioEsignDele
      reject: reject
      )else{return}
 
-      let clientSecretKey = self.optionalString("clientSecretKey", from: config)
+    //   let clientSecretKey = self.optionalString("clientSecretKey", from: config)
+      let clientSecretKey = self.optionalString("clientSecretKey", from: config) ?? ""
 //      let clientToken = optionalString("token", from: config)
       
       let logo = config["logo"] as? String
