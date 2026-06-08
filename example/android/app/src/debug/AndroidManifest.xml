@@ -6,6 +6,8 @@
 
     <application
         android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/react_native_dev_network_security_config"
+        tools:replace="android:networkSecurityConfig,android:usesCleartextTraffic"
         tools:targetApi="28"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false" />
