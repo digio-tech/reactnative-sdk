@@ -316,5 +316,37 @@ It is required to test the release build for possible proguard exceptions before
 -keep public class * extends androidx.**
 -keep public class com.google.android.material.** { *; }
 -keep public class androidx.** { public *; }
+
+
+#emudhra
+-keep class com.emudhra.** { *; }
+-keep interface com.emudhra.** { *; }
+-keepclassmembers class com.emudhra.** {
+    native <methods>;
+}
+-dontwarn com.emudhra.**
+
+# Jackson dataformat XML (used by emudhra at runtime via XmlMapper)
+-keep class com.fasterxml.jackson.** { *; }
+-keepnames class com.fasterxml.jackson.** { *; }
+-dontwarn com.fasterxml.jackson.**
+
+# Woodstox - StAX implementation backing jackson-dataformat-xml.
+# FactoryFinder uses Class.forName via META-INF/services lookup; the impl
+# classes must not be obfuscated or shrunk away.
+-keep class com.ctc.wstx.** { *; }
+-keep class org.codehaus.stax2.** { *; }
+-dontwarn com.ctc.wstx.**
+-dontwarn org.codehaus.stax2.**
+
+# StAX API surfaces referenced via reflection
+-keep class javax.xml.stream.** { *; }
+-dontwarn javax.xml.stream.**
+-keep class * implements javax.xml.stream.XMLInputFactory
+-keep class * implements javax.xml.stream.XMLOutputFactory
+-keep class * implements javax.xml.stream.XMLEventFactory
+
+-keepattributes Signature, *Annotation*, EnclosingMethod, InnerClasses
+
 ```
 
