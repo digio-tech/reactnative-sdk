@@ -97,6 +97,12 @@ repositories {
   google()
 }
 
+rootProject.allprojects {
+  repositories {
+    maven { url 'https://pkgs.dev.azure.com/eMudhraTrustService/b81ae285-cb60-4000-8c39-394db16f2a75/_packaging/eMudhraEsignAAR/maven/v1' }
+  }
+}
+
 
 dependencies {
   // For < 0.71, this will be from the local maven repo
@@ -104,7 +110,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
 // core dependencies
-  implementation(platform("com.github.digio-tech:digio-bom:v1.0.59"))
+  implementation(platform("com.github.digio-tech:digio-bom:v1.0.73"))
   implementation("androidx.appcompat:appcompat")
   implementation("com.google.android.material:material")
   implementation("androidx.navigation:navigation-fragment-ktx")
@@ -163,6 +169,19 @@ dependencies {
 
   implementation ("com.airbnb.android:lottie:6.6.6")
   implementation("androidx.core:core-animation:1.0.0")
+
+  implementation('com.emudhra:esign:1.0.0-SNAPSHOT') {
+        changing = true
+    }
+
+    implementation("org.bouncycastle:bcprov-jdk16:1.45")
+
+    // Required by eMudhra at runtime; Jitpack esign_biometrics POM doesn't propagate it
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.1") {
+        exclude group: "xpp3", module: "xpp3"
+        exclude group: "org.xmlpull", module: "xmlpull"
+        exclude group: "javax.xml.stream", module: "stax-api"
+    }
 
 }
 
