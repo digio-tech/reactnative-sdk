@@ -33,9 +33,9 @@ export default function App() {
   const startDigioFlow = () => {
     digioRef.current
       ?.start(
-        'KID26022XXXXX2996LOVUKSGYN',
+        'KID26101XXXXXXXXXXXXX5SRM5JRD',
         'ak@digio.in',
-        'GWT2602231XXXXXWEOCTQPO9ECS'
+        'GWT26101214XXXXKWIT2X7RYN9TFS'
       )
       .then((res: any) => {
         console.log(res);
@@ -49,11 +49,12 @@ export default function App() {
   const startStatelessFlow = () => {
   digioRef.current
     ?.startStateless({
-      clientId: "Your Client ID",
-      clientSecretKey: "Your Client Secret Key",
+      clientId: "", // Pass Your Client ID
+      // clientSecretKey: "",
       taskTypes: ["SELFIE"],
       locationRequired: true,
       shouldShowInstructions: false,
+      token: "" // Pass JWT Token
     })
     .then((res: any) => {
       console.log(res);
