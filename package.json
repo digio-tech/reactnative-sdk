@@ -1,6 +1,6 @@
 {
   "name": "@digiotech/react-native",
-  "version": "2.0.17",
+  "version": "2.0.18",
   "description": "Digio React Native SDK for invoking client-side journeys such as KYC, Selfie, Mandate, RPD, and other Digio workflows.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

@@ -1,6 +1,7 @@
 # Digio React Native SDK
 
 [![npm version](https://badge.fury.io/js/@digiotech%2Freact-native.svg)](https://badge.fury.io/js/@digiotech%2Freact-native)
+[![Release Notes](https://img.shields.io/github/v/release/digio-tech/reactnative-sdk?label=Release%20Notes&color=blue)](https://github.com/digio-tech/reactnative-sdk/releases)
 
 Official React Native SDK for Digio Gateway Integration
 
