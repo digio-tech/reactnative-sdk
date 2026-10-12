@@ -92,8 +92,7 @@ export class Digio {
     };
   }
 
-  async startStateless(
-  config: {
+  async startStateless(config: {
     clientId: string;
     clientSecretKey?: string;
     taskTypes?: string[];
@@ -101,11 +100,10 @@ export class Digio {
     locationRequired?: boolean;
     shouldShowInstructions?: boolean;
     token?: string;
+  }): Promise<DigioResponse> {
+    return DigioReactNative.startStateless({
+      ...config,
+      ...this.buildConfigParams(),
+    });
   }
-): Promise<DigioResponse> {
-  return DigioReactNative.startStateless({
-    ...config,
-    ...this.buildConfigParams(),
-  });
-}
 }
