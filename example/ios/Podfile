@@ -31,7 +31,9 @@ target 'DigioReactNativeExample' do
 
   # Flags change depending on the env values.
   flags = get_default_flags()
-
+  pod 'DigioCaptureKit'
+#  pod 'DigiokycSDK', :git => 'https://github.com/digio-tech/digio-iOS-KYC-SDK.git', :tag => '2.0.3-beta.1'
+ 
   use_react_native!(
     :path => config[:reactNativePath],
     # Hermes is now enabled by default. Disable by setting this flag to false.
@@ -51,17 +53,14 @@ target 'DigioReactNativeExample' do
     # Pods for testing
   end
 
-  post_install do |installer|
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+ post_install do |installer|
+   # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
 
-    react_native_post_install(
-      installer,
-      config[:reactNativePath],
-      :mac_catalyst_enabled => false
-    )
+   react_native_post_install(
+     installer,
+     config[:reactNativePath],
+     :mac_catalyst_enabled => false
+   )
 #     __apply_Xcode_12_5_M1_post_install_workaround(installer)
-  end
+ end
 end
-
-# pod 'DigiokycSDK', '~> 1.1.0'
-# pod 'DigioCaptureKit'

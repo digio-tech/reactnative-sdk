@@ -1,14 +1,20 @@
 PODS:
   - boost (1.83.0)
   - CocoaAsyncSocket (7.6.5)
-  - digio-react-native (2.0.6):
+  - digio-react-native (2.0.15):
+    - digio-react-native/Core (= 2.0.15)
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
+  - digio-react-native/Core (2.0.15):
     - DigioEsignSDK
     - DigiokycSDK
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - DigioEsignSDK (1.0.11)
-  - DigiokycSDK (2.0.0)
+  - DigioCaptureKit (2.0.8)
+  - DigioEsignSDK (1.0.12)
+  - DigiokycSDK (2.0.9)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.73.11)
   - FBReactNativeSpec (0.73.11):
@@ -1125,6 +1131,7 @@ PODS:
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - digio-react-native (from `../..`)
+  - DigioCaptureKit
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
@@ -1201,6 +1208,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - CocoaAsyncSocket
+    - DigioCaptureKit
     - DigioEsignSDK
     - DigiokycSDK
     - Flipper
@@ -1320,9 +1328,10 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  digio-react-native: 2d11964d74731e3f5a59f6620f7d2f83b1543cde
-  DigioEsignSDK: 6dd659b244c9217d9e95f4923f3f1b87fd09394b
-  DigiokycSDK: 81c33a2dcc2b1d65715697e13e570acdbeecbd24
+  digio-react-native: 8e8a5ce6acd4872bf64f2a970ec223dd654e2c78
+  DigioCaptureKit: 72927fa097b729476e73aa7436975317746270dd
+  DigioEsignSDK: 861fdc1cded950f513fccea4cb886e6e6db6e0b1
+  DigiokycSDK: f6b14655a7c14ab08449dad4bd744a9ffff0ad00
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   FBLazyVector: b46891061bfe0a9b07f601813114c8653a72a45c
   FBReactNativeSpec: 9a01850c21d81027fa7b20b9dcc25d9bfae083da
@@ -1383,6 +1392,6 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: a813a6d82538ccba91c54406404e3ed80b48a692
 
-PODFILE CHECKSUM: 0ee706da6f5af172ee9ac0cf8ec769ce173ae9c5
+PODFILE CHECKSUM: ce0f2857780ae5956d3c638e5953379b7b6e1a8a
 
 COCOAPODS: 1.16.2

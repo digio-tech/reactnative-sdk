@@ -91,4 +91,19 @@ export class Digio {
       ...this.config.theme,
     };
   }
+
+  async startStateless(config: {
+    clientId: string;
+    clientSecretKey?: string;
+    taskTypes?: string[];
+    isImagePreview?: boolean;
+    locationRequired?: boolean;
+    shouldShowInstructions?: boolean;
+    token?: string;
+  }): Promise<DigioResponse> {
+    return DigioReactNative.startStateless({
+      ...config,
+      ...this.buildConfigParams(),
+    });
+  }
 }

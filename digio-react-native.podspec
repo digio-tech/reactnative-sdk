@@ -11,14 +11,27 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.authors      = package["author"]
 
-  s.platforms    = { :ios => "15.6" }
+  s.platforms    = { :ios => "15.1" }
   s.source       = { :git => "https://github.com/digio-tech/reactnative-sdk.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/**/*.{h,m,mm,swift}"
+  s.default_subspecs = 'Core'
+  # Core (default)
+    s.subspec 'Core' do |core|
+      core.source_files = "ios/**/*.{h,m,mm,swift}"
+      core.dependency 'DigiokycSDK'
+      core.dependency 'DigioEsignSDK'
+    end
+
+#   s.source_files = "ios/**/*.{h,m,mm,swift}"
 #   enable below to run local xcframework
 # s.vendored_frameworks = 'ios/DigiokycSDK.xcframework'
-  s.dependency 'DigiokycSDK'
-  s.dependency 'DigioEsignSDK'
+#   s.dependency 'DigiokycSDK'
+#   s.dependency 'DigioEsignSDK'
+
+  # Optional CaptureKit
+  s.subspec 'CaptureKit' do |capture|
+    capture.dependency 'DigioCaptureKit'
+  end
 
   # Use install_modules_dependencies helper to install the dependencies if React Native version >=0.71.0.
   # See https://github.com/facebook/react-native/blob/febf6b7f33fdb4904669f99d795eba4c0f95d7bf/scripts/cocoapods/new_architecture.rb#L79.

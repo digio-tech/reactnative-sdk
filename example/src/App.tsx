@@ -13,17 +13,16 @@ export default function App() {
     digioRef.current = new Digio({
       environment: Environment.PRODUCTION,
       serviceMode: ServiceMode.OTP,
-      isGlobal: false
+      isGlobal: false,
     });
 
-    const digioGatewayEventSubscription = digioRef.current.addGatewayEventListener(
-      (event: GatewayEvent) => {
+    const digioGatewayEventSubscription =
+      digioRef.current.addGatewayEventListener((event: GatewayEvent) => {
         console.log('Digio_event ' + event.event);
         if (event.event !== undefined) {
           setDigioEvent(event.event);
         }
-      }
-    );
+      });
 
     return () => {
       digioGatewayEventSubscription.remove();
@@ -33,15 +32,32 @@ export default function App() {
   const startDigioFlow = () => {
     digioRef.current
       ?.start(
-        'KID260105170017231VSUZE4S6YY7Y59',
-        'akash.kumar@digio.in',
-        'GWT260105170017251CLGKYRDL4AHNZS'
+        'KID2610121XXXXNYKUIJ273IYXB',
+        'ak@digio.in',
+        'GWT261XXXXXXXXXXXXTZRFH2LPS'
       )
       .then((res: any) => {
         console.log(res);
         if (res !== undefined) {
           setDigioResult(res);
         }
+      })
+      .catch((err: any) => console.error(err));
+  };
+
+  const startStatelessFlow = () => {
+    digioRef.current
+      ?.startStateless({
+        clientId: '', // Pass Your Client ID
+        // clientSecretKey: "",
+        taskTypes: ['SELFIE'],
+        locationRequired: true,
+        shouldShowInstructions: false,
+        token: '', // Pass JWT Token
+      })
+      .then((res: any) => {
+        console.log(res);
+        setDigioResult(res);
       })
       .catch((err: any) => console.error(err));
   };
@@ -61,6 +77,11 @@ export default function App() {
       {/* Floating Action Button */}
       <TouchableOpacity style={styles.fab} onPress={startDigioFlow}>
         <Text style={styles.fabText}>+</Text>
+      </TouchableOpacity>
+
+      {/* Floating Action Button 2 */}
+      <TouchableOpacity style={styles.fabSecond} onPress={startStatelessFlow}>
+        <Text style={styles.fabText}>⚡</Text>
       </TouchableOpacity>
     </View>
   );
@@ -94,6 +115,18 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 5,
+  },
+  fabSecond: {
+    position: 'absolute',
+    bottom: 30,
+    right: 90, // move left so it doesn't overlap
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#03dac6',
+    justifyContent: 'center',
+    alignItems: 'center',
     elevation: 5,
   },
   fabText: {
