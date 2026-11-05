@@ -1,12 +1,12 @@
 PODS:
   - boost (1.83.0)
   - CocoaAsyncSocket (7.6.5)
-  - digio-react-native (2.0.15):
-    - digio-react-native/Core (= 2.0.15)
+  - digio-react-native (2.0.18):
+    - digio-react-native/Core (= 2.0.18)
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - digio-react-native/Core (2.0.15):
+  - digio-react-native/Core (2.0.18):
     - DigioEsignSDK
     - DigiokycSDK
     - glog
@@ -1328,7 +1328,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  digio-react-native: 8e8a5ce6acd4872bf64f2a970ec223dd654e2c78
+  digio-react-native: 3051187e719999f10aa3b270ac410ffdcea602a8
   DigioCaptureKit: 72927fa097b729476e73aa7436975317746270dd
   DigioEsignSDK: 861fdc1cded950f513fccea4cb886e6e6db6e0b1
   DigiokycSDK: f6b14655a7c14ab08449dad4bd744a9ffff0ad00

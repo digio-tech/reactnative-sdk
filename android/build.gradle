@@ -58,7 +58,7 @@ android {
   defaultConfig {
     minSdkVersion getExtOrIntegerDefault("minSdkVersion")
     targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
-
+    consumerProguardFiles 'consumer-rules.pro'
   }
 
   buildTypes {
@@ -110,7 +110,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
 // core dependencies
-  implementation(platform("com.github.digio-tech:digio-bom:v1.0.92"))
+  implementation(platform("com.github.digio-tech:digio-bom:v1.0.93"))
   implementation("androidx.appcompat:appcompat")
   implementation("com.google.android.material:material")
   implementation("androidx.navigation:navigation-fragment-ktx")
@@ -119,7 +119,11 @@ dependencies {
   implementation("com.github.digio-tech:gateway")
 
   implementation("androidx.swiperefreshlayout:swiperefreshlayout")
-  implementation("com.android.volley:volley")
+  implementation("com.android.volley:volley"){
+        // The exclusion might not be strictly necessary here as it's a common library,
+        // but it's good to be explicit if you suspect a conflict.
+        exclude group: 'xmlpull', module: 'xmlpull'
+    }
   implementation("com.squareup.okhttp3:okhttp")
   implementation("com.squareup.okhttp3:logging-interceptor")
   implementation("com.google.code.gson:gson")
@@ -163,7 +167,10 @@ dependencies {
   implementation("androidx.lifecycle:lifecycle-livedata-ktx")
   implementation("com.squareup.retrofit2:converter-gson")
 
-  implementation("org.simpleframework:simple-xml")
+  implementation("org.simpleframework:simple-xml"){
+        exclude group: 'xmlpull', module: 'xmlpull'
+        exclude group: 'xpp3', module: 'xpp3' // Also exclude xpp3
+    }
   implementation("com.github.bumptech.glide:glide")
 
 //  implementation ("com.airbnb.android:lottie:6.6.6")
